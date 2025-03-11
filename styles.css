@@ -1,0 +1,271 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    text-align: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* 選擇侍靈頁面整體縮小 20% */
+#selection {
+    transform: scale(0.8); /* 縮小 20% */
+    transform-origin: top center; /* 縮放從頂部中心開始 */
+    max-width: 960px; /* 原 max-width 1200px * 0.8 */
+}
+
+#spirit-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px; /* 原 10px * 0.8 */
+    justify-content: center;
+}
+
+.spirit {
+    padding: 8px; /* 原 10px * 0.8 */
+    width: 80px; /* 原 100px * 0.8 */
+    height: 80px; /* 原 100px * 0.8 */
+    border: 1px solid #ccc;
+    cursor: pointer;
+    text-align: center;
+    background-size: cover;
+    background-position: center;
+    color: white;
+    text-shadow: 1px 1px 2px black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px; /* 原默認 16px * 0.8，假設未指定則調整 */
+}
+
+.spirit.epic {
+    border-color: gold;
+}
+
+.spirit.rare {
+    border-color: purple;
+}
+
+.spirit.common {
+    border-color: blue;
+}
+
+#selected-spirits {
+    margin-top: 16px; /* 原 20px * 0.8 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#selected-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px; /* 原 20px * 0.8 */
+    width: 100%;
+    max-width: 960px; /* 原 1200px * 0.8 */
+}
+
+.selected-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 8px 0; /* 原 10px * 0.8 */
+    min-width: 200px; /* 原 250px * 0.8 */
+}
+
+.selected-item .spirit {
+    margin-bottom: 8px; /* 原 10px * 0.8 */
+    cursor: pointer;
+    width: 64px; /* 原 80px * 0.8 */
+    height: 64px; /* 原 80px * 0.8 */
+}
+
+.prop-row {
+    display: flex;
+    justify-content: center;
+    gap: 12px; /* 原 15px * 0.8 */
+    margin: 4px 0; /* 原 5px * 0.8 */
+}
+
+.input-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.prop-input {
+    width: 32px; /* 原 40px * 0.8 */
+    padding: 1.6px; /* 原 2px * 0.8 */
+}
+
+.prop-label {
+    font-size: 9.6px; /* 原 12px * 0.8 */
+    margin-top: 1.6px; /* 原 2px * 0.8 */
+}
+
+.result-table {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.result-row {
+    display: flex;
+    justify-content: space-between;
+    width: 300px; /* 固定寬度，確保左右置中後美觀 */
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.result-row .spirit {
+    width: 60px; /* 調整侍靈圖片大小 */
+    height: 60px;
+    padding: 5px;
+    background-size: cover;
+    background-position: center;
+    color: white;
+    text-shadow: 1px 1px 2px black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.result-row .win-rate {
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+}
+
+#settings-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+#settings-page label {
+    font-size: 18px;
+}
+
+#settings-page input {
+    padding: 5px;
+    font-size: 16px;
+    width: 150px;
+}
+
+.result-table {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.result-row {
+    display: flex;
+    justify-content: space-between;
+    width: 300px;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.result-row .spirit {
+    width: 60px;
+    height: 60px;
+    padding: 5px;
+    background-size: cover;
+    background-position: center;
+    color: white;
+    text-shadow: 1px 1px 2px black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.result-row .win-rate {
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.sample-size-text {
+    font-size: 14px;
+    color: #666;
+    margin-top: -10px;
+}
+
+#custom-spirit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+#custom-spirit-form input {
+    padding: 5px;
+    font-size: 14px;
+    width: 80px;
+}
+
+#custom-spirit-form input[name="spirit-name"] {
+    width: 120px;
+}
+
+#custom-spirit-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.custom-spirit-entry {
+    display: flex;
+    justify-content: space-between;
+    width: 400px;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.custom-spirit-entry button {
+    padding: 5px 10px;
+    font-size: 12px;
+}
+
+
+/* 現有樣式保持不變，新增以下內容 */
+.spirit.custom {
+    border-color: black !important; /* 自訂侍靈邊框固定為黑色 */
+}
+
+/* 確保其他樣式不影響自訂侍靈 */
+.spirit.epic {
+    border-color: gold;
+}
+
+.spirit.rare {
+    border-color: purple;
+}
+
+.spirit.common {
+    border-color: blue;
+}
