@@ -18,10 +18,9 @@ button {
     cursor: pointer;
 }
 
-/* 選擇侍靈頁面整體縮小 20% */
 #selection {
     transform: scale(0.8); /* 縮小 20% */
-    transform-origin: top center; /* 縮放從頂部中心開始 */
+    transform-origin: top center; /* 縮放 */
     max-width: 960px; /* 原 max-width 1200px * 0.8 */
 }
 
@@ -46,7 +45,7 @@ button {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px; /* 原默認 16px * 0.8，假設未指定則調整 */
+    font-size: 14px;
 }
 
 .spirit.epic {
@@ -126,7 +125,7 @@ button {
 .result-row {
     display: flex;
     justify-content: space-between;
-    width: 300px; /* 固定寬度，確保左右置中後美觀 */
+    width: 300px;
     padding: 10px;
     background-color: #fff;
     border: 1px solid #ccc;
@@ -134,7 +133,7 @@ button {
 }
 
 .result-row .spirit {
-    width: 60px; /* 調整侍靈圖片大小 */
+    width: 60px;
     height: 60px;
     padding: 5px;
     background-size: cover;
@@ -252,12 +251,11 @@ button {
 }
 
 
-/* 現有樣式保持不變，新增以下內容 */
+
 .spirit.custom {
-    border-color: black !important; /* 自訂侍靈邊框固定為黑色 */
+    border-color: black !important;
 }
 
-/* 確保其他樣式不影響自訂侍靈 */
 .spirit.epic {
     border-color: gold;
 }
