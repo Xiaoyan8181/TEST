@@ -210,10 +210,10 @@ function updateSelectedList() {
         else nameSpan.classList.add('common');
         nameSpan.style.backgroundImage = `url('images/${String(index + 1).padStart(3, '0')}.png')`;
         nameSpan.addEventListener('click', () => {
-            // 取消選擇時檢查是否為「大桶」
+            // 檢查大桶
             if (index === 31) {
                 ngmayAudio.play().catch(error => {
-                    console.error('NGMAY 播放錯誤:', error);
+                    console.error('錯誤', error);
                 });
             }
             selectedSpirits = selectedSpirits.filter(i => i !== index);
