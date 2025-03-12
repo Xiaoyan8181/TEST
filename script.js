@@ -28,6 +28,9 @@ let dice = [
 let selectedSpirits = [];
 let totalSimulations = 100000;
 
+// 聲音
+const rjjdcAudio = new Audio('audio/RJJDC.mp3');
+
 // 目錄按鈕事件
 document.getElementById('start').addEventListener('click', () => {
     document.getElementById('menu').style.display = 'none';
@@ -58,8 +61,18 @@ document.getElementById('exit').addEventListener('click', () => {
 document.getElementById('back-to-menu-from-selection').addEventListener('click', () => {
     document.getElementById('selection').style.display = 'none';
     document.getElementById('menu').style.display = 'block';
-    selectedSpirits = [];
+    document.getElementById('sample-size').value = totalSimulations;
     updateSelectedList();
+});
+
+document.getElementById('exit').addEventListener('click', () => {
+    window.close();
+});
+
+document.getElementById('rjjdc-image').addEventListener('click', () => {
+    rjjdcAudio.play().catch(error => {
+        console.error('錯誤', error);
+    });
 });
 
 // 設定頁面 - 保存並返回
