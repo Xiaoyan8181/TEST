@@ -30,7 +30,8 @@ let totalSimulations = 100000;
 
 // 聲音
 const rjjdcAudio = new Audio('audio/RJJDC.mp3');
-const ngmayAudio = new Audio('audio/NGMAY.mp3'); // 新增 NGMAY.mp3 音效
+const ngmayAudio = new Audio('audio/NGMAY.mp3');
+const lblhnkgAudio = new Audio('audio/LBLHNKG.mp3'); // 新增 LBLHNKG.mp3 音效
 
 // 目錄按鈕事件
 document.getElementById('start').addEventListener('click', () => {
@@ -179,11 +180,17 @@ function selectSpirit(index) {
         // 檢查是否取消選擇「大桶」（索引 31）
         if (index === 31) {
             ngmayAudio.play().catch(error => {
-                console.error('NGMAY 播放錯誤:', error);
+                console.error('錯誤', error);
             });
         }
     } else if (selectedSpirits.length < 4) {
         selectedSpirits.push(index);
+        // 檢查是否選擇「大桶」（索引 31）
+        if (index === 31) {
+            lblhnkgAudio.play().catch(error => {
+                console.error('錯誤', error);
+            });
+        }
     } else {
         alert('最多只能選擇4個侍靈！');
         return;
@@ -210,10 +217,10 @@ function updateSelectedList() {
         else nameSpan.classList.add('common');
         nameSpan.style.backgroundImage = `url('images/${String(index + 1).padStart(3, '0')}.png')`;
         nameSpan.addEventListener('click', () => {
-            // 檢查大桶
+            // 取消選擇時檢查是否為「大桶」
             if (index === 31) {
                 ngmayAudio.play().catch(error => {
-                    console.error('錯誤', error);
+                    console.error('NGMAY 播放錯誤:', error);
                 });
             }
             selectedSpirits = selectedSpirits.filter(i => i !== index);
