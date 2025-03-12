@@ -61,14 +61,11 @@ document.getElementById('exit').addEventListener('click', () => {
 document.getElementById('back-to-menu-from-selection').addEventListener('click', () => {
     document.getElementById('selection').style.display = 'none';
     document.getElementById('menu').style.display = 'block';
-    document.getElementById('sample-size').value = totalSimulations;
+    selectedSpirits = [];
     updateSelectedList();
 });
 
-document.getElementById('exit').addEventListener('click', () => {
-    window.close();
-});
-
+// 為圖片添加點擊播放音頻的事件
 document.getElementById('rjjdc-image').addEventListener('click', () => {
     rjjdcAudio.play().catch(error => {
         console.error('錯誤', error);
