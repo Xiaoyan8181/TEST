@@ -30,6 +30,7 @@ let totalSimulations = 100000;
 
 // 聲音
 const rjjdcAudio = new Audio('audio/RJJDC.mp3');
+const ngmayAudio = new Audio('audio/NGMAY.mp3'); // 新增 NGMAY.mp3 音效
 
 // 目錄按鈕事件
 document.getElementById('start').addEventListener('click', () => {
@@ -161,7 +162,7 @@ function loadSpiritList() {
         const spiritDiv = document.createElement('div');
         spiritDiv.textContent = spiritName;
         spiritDiv.classList.add('spirit');
-        if (index >= 33) spiritDiv.classList.add('custom'); // 自訂侍靈添加 custom 類別
+        if (index >= 33) spiritDiv.classList.add('custom');
         else if (rare[index] === 2) spiritDiv.classList.add('epic');
         else if (rare[index] === 1) spiritDiv.classList.add('rare');
         else spiritDiv.classList.add('common');
@@ -175,6 +176,12 @@ function loadSpiritList() {
 function selectSpirit(index) {
     if (selectedSpirits.includes(index)) {
         selectedSpirits = selectedSpirits.filter(i => i !== index);
+        // 檢查是否取消選擇「大桶」（索引 31）
+        if (index === 31) {
+            ngmayAudio.play().catch(error => {
+                console.error('NGMAY 播放錯誤:', error);
+            });
+        }
     } else if (selectedSpirits.length < 4) {
         selectedSpirits.push(index);
     } else {
@@ -197,12 +204,18 @@ function updateSelectedList() {
         const nameSpan = document.createElement('span');
         nameSpan.textContent = name[index];
         nameSpan.classList.add('spirit');
-        if (index >= 33) nameSpan.classList.add('custom'); // 自訂侍靈添加 custom 類別
+        if (index >= 33) nameSpan.classList.add('custom');
         else if (rare[index] === 2) nameSpan.classList.add('epic');
         else if (rare[index] === 1) nameSpan.classList.add('rare');
         else nameSpan.classList.add('common');
         nameSpan.style.backgroundImage = `url('images/${String(index + 1).padStart(3, '0')}.png')`;
         nameSpan.addEventListener('click', () => {
+            // 取消選擇時檢查是否為「大桶」
+            if (index === 31) {
+                ngmayAudio.play().catch(error => {
+                    console.error('NGMAY 播放錯誤:', error);
+                });
+            }
             selectedSpirits = selectedSpirits.filter(i => i !== index);
             updateSelectedList();
         });
@@ -353,7 +366,7 @@ function displayResults(wins, totalSimulations) {
 
         const spiritName = document.createElement('span');
         spiritName.classList.add('spirit');
-        if (spiritIndex >= 33) spiritName.classList.add('custom'); // 自訂侍靈添加 custom 類別
+        if (spiritIndex >= 33) spiritName.classList.add('custom');
         else if (rare[spiritIndex] === 2) spiritName.classList.add('epic');
         else if (rare[spiritIndex] === 1) spiritName.classList.add('rare');
         else spiritName.classList.add('common');
