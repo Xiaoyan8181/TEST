@@ -220,7 +220,7 @@ function updateSelectedList() {
             // 取消選擇時檢查是否為「大桶」
             if (index === 31) {
                 ngmayAudio.play().catch(error => {
-                    console.error('NGMAY 播放錯誤:', error);
+                    console.error('錯誤:', error);
                 });
             }
             selectedSpirits = selectedSpirits.filter(i => i !== index);
