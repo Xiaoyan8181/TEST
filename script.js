@@ -36,7 +36,7 @@ document.getElementById('start').addEventListener('click', () => {
 });
 
 document.getElementById('instructions').addEventListener('click', () => {
-    alert('使用說明：選擇最多4個侍靈，然後為每個侍靈填入6個道具數值，最後計算勝率。');
+    alert('使用說明：選擇至多4個侍靈，然後每個侍靈填入6種道具的數值，計算勝率。');
 });
 
 document.getElementById('author').addEventListener('click', () => {
@@ -70,7 +70,7 @@ document.getElementById('save-settings').addEventListener('click', () => {
         document.getElementById('settings-page').style.display = 'none';
         document.getElementById('menu').style.display = 'block';
     } else {
-        alert('樣本數必須大於或等於 1000！');
+        alert('樣本數不能小於1000');
     }
 });
 
@@ -110,7 +110,7 @@ document.getElementById('add-custom-spirit').addEventListener('click', () => {
             updateCustomSpiritList();
             loadSpiritList();
         } else {
-            alert('請輸入有效名稱和點數（0-100）！');
+            alert('請輸入名稱和至多100的點數');
         }
     });
 });
