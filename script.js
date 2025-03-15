@@ -31,7 +31,7 @@ let totalSimulations = 100000;
 // 聲音
 const rjjdcAudio = new Audio('audio/RJJDC.mp3');
 const ngmayAudio = new Audio('audio/NGMAY.mp3');
-const lblhnkgAudio = new Audio('audio/LBLHNKG.mp3'); // 新增 LBLHNKG.mp3 音效
+const lblhnkgAudio = new Audio('audio/LBLHNKG.mp3');
 
 // 目錄按鈕事件
 document.getElementById('start').addEventListener('click', () => {
@@ -41,11 +41,13 @@ document.getElementById('start').addEventListener('click', () => {
 });
 
 document.getElementById('instructions').addEventListener('click', () => {
-    alert('使用說明：選擇至多4個侍靈，然後每個侍靈填入6種道具的數值，計算勝率。');
+    document.getElementById('menu').style.display = 'none';
+    document.getElementById('instructions-page').style.display = 'block';
 });
 
 document.getElementById('author').addEventListener('click', () => {
-    alert('作者：黑鷺鷺');
+    document.getElementById('menu').style.display = 'none';
+    document.getElementById('author-page').style.display = 'block';
 });
 
 document.getElementById('settings').addEventListener('click', () => {
@@ -59,7 +61,7 @@ document.getElementById('exit').addEventListener('click', () => {
     window.close();
 });
 
-// 選擇侍靈頁面 - 回到目錄
+// 返回目錄事件
 document.getElementById('back-to-menu-from-selection').addEventListener('click', () => {
     document.getElementById('selection').style.display = 'none';
     document.getElementById('menu').style.display = 'block';
@@ -67,11 +69,19 @@ document.getElementById('back-to-menu-from-selection').addEventListener('click',
     updateSelectedList();
 });
 
+document.getElementById('back-to-menu-from-instructions').addEventListener('click', () => {
+    document.getElementById('instructions-page').style.display = 'none';
+    document.getElementById('menu').style.display = 'block';
+});
+
+document.getElementById('back-to-menu-from-author').addEventListener('click', () => {
+    document.getElementById('author-page').style.display = 'none';
+    document.getElementById('menu').style.display = 'block';
+});
+
 // 為圖片添加點擊播放音頻的事件
 document.getElementById('rjjdc-image').addEventListener('click', () => {
-    rjjdcAudio.play().catch(error => {
-        console.error('錯誤', error);
-    });
+    rjjdcAudio.play().catch(error => console.error('錯誤', error));
 });
 
 // 設定頁面 - 保存並返回
@@ -117,7 +127,7 @@ document.getElementById('add-custom-spirit').addEventListener('click', () => {
         if (spiritName && diceValues.every(val => !isNaN(val) && val >= 0 && val <= 100)) {
             name.push(spiritName);
             dice.push(diceValues);
-            rare.push(1); // 默認稀有度為 1
+            rare.push(1);
             form.style.display = 'none';
             updateCustomSpiritList();
             loadSpiritList();
@@ -131,7 +141,7 @@ document.getElementById('add-custom-spirit').addEventListener('click', () => {
 function updateCustomSpiritList() {
     const customList = document.getElementById('custom-spirit-list');
     customList.innerHTML = '';
-    const customStartIndex = 33; // 原始侍靈數量為 33（0-32）
+    const customStartIndex = 33;
     for (let i = customStartIndex; i < name.length; i++) {
         const entry = document.createElement('div');
         entry.classList.add('custom-spirit-entry');
@@ -177,20 +187,10 @@ function loadSpiritList() {
 function selectSpirit(index) {
     if (selectedSpirits.includes(index)) {
         selectedSpirits = selectedSpirits.filter(i => i !== index);
-        // 檢查是否取消選擇「大桶」（索引 31）
-        if (index === 31) {
-            ngmayAudio.play().catch(error => {
-                console.error('錯誤', error);
-            });
-        }
+        if (index === 31) ngmayAudio.play().catch(error => console.error('錯誤', error));
     } else if (selectedSpirits.length < 4) {
         selectedSpirits.push(index);
-        // 檢查是否選擇「大桶」（索引 31）
-        if (index === 31) {
-            lblhnkgAudio.play().catch(error => {
-                console.error('錯誤', error);
-            });
-        }
+        if (index === 31) lblhnkgAudio.play().catch(error => console.error('錯誤', error));
     } else {
         alert('最多只能選擇4個侍靈！');
         return;
@@ -217,12 +217,7 @@ function updateSelectedList() {
         else nameSpan.classList.add('common');
         nameSpan.style.backgroundImage = `url('images/${String(index + 1).padStart(3, '0')}.png')`;
         nameSpan.addEventListener('click', () => {
-            // 取消選擇時檢查是否為「大桶」
-            if (index === 31) {
-                ngmayAudio.play().catch(error => {
-                    console.error('錯誤:', error);
-                });
-            }
+            if (index === 31) ngmayAudio.play().catch(error => console.error('錯誤:', error));
             selectedSpirits = selectedSpirits.filter(i => i !== index);
             updateSelectedList();
         });
@@ -276,23 +271,51 @@ function updateSelectedList() {
     });
 }
 
-// 確認選擇並開始計算
-document.getElementById('confirm').addEventListener('click', () => {
+// 開始計算
+document.getElementById('start-calculation').addEventListener('click', () => {
     if (selectedSpirits.length === 0) {
         alert('請至少選擇一個侍靈！');
         return;
     }
+    document.getElementById('selection').style.display = 'none';
+    document.getElementById('calculation-page').style.display = 'block';
+    loadCalculationSpirits();
+    updateProgress(0);
     calculateWinRate();
 });
 
+// 加載計算頁面的侍靈
+function loadCalculationSpirits() {
+    const calcSpirits = document.getElementById('calculation-spirits');
+    calcSpirits.innerHTML = '';
+    selectedSpirits.forEach(index => {
+        const spiritDiv = document.createElement('div');
+        spiritDiv.classList.add('spirit');
+        spiritDiv.textContent = name[index];
+        if (index >= 33) spiritDiv.classList.add('custom');
+        else if (rare[index] === 2) spiritDiv.classList.add('epic');
+        else if (rare[index] === 1) spiritDiv.classList.add('rare');
+        else spiritDiv.classList.add('common');
+        spiritDiv.style.backgroundImage = `url('images/${String(index + 1).padStart(3, '0')}.png')`;
+        calcSpirits.appendChild(spiritDiv);
+    });
+}
+
+// 更新計算進度
+function updateProgress(progress) {
+    const progressText = document.getElementById('progress-text');
+    progressText.textContent = `計算進度：${progress.toFixed(0)}%`;
+}
+
 // 計算勝率
-function calculateWinRate() {
+async function calculateWinRate() {
     const props = selectedSpirits.map((spiritIndex, i) => {
         const inputs = document.querySelectorAll('#selected-list .selected-item')[i].querySelectorAll('input');
         return Array.from(inputs).map(input => parseInt(input.value) || 0);
     });
 
     const wins = new Array(selectedSpirits.length).fill(0);
+    let lastProgress = 0;
 
     for (let sim = 0; sim < totalSimulations; sim++) {
         let scores = new Array(selectedSpirits.length).fill(0);
@@ -320,12 +343,12 @@ function calculateWinRate() {
                     propsCopy[i][propIndex]--;
 
                     switch (propIndex) {
-                        case 0: adjustedRoll += Math.floor(Math.random() * 3); break;       // +0~2
-                        case 1: adjustedRoll += 2 + Math.floor(Math.random() * 3); break;   // +2~4
-                        case 2: adjustedRoll += dice[selectedSpirits[i]][Math.floor(Math.random() * 6)]; break; // 骰子+1
-                        case 3: adjustedRoll -= Math.floor(Math.random() * 3); break;       // -0~2
-                        case 4: adjustedRoll -= 2 + Math.floor(Math.random() * 3); break;   // -2~4
-                        case 5: adjustedRoll = 1; break;                                   // 點數=1
+                        case 0: adjustedRoll += Math.floor(Math.random() * 3); break;
+                        case 1: adjustedRoll += 2 + Math.floor(Math.random() * 3); break;
+                        case 2: adjustedRoll += dice[selectedSpirits[i]][Math.floor(Math.random() * 6)]; break;
+                        case 3: adjustedRoll -= Math.floor(Math.random() * 3); break;
+                        case 4: adjustedRoll -= 2 + Math.floor(Math.random() * 3); break;
+                        case 5: adjustedRoll = 1; break;
                     }
                     if (adjustedRoll < 0) adjustedRoll = 0;
                 }
@@ -343,14 +366,23 @@ function calculateWinRate() {
                 }
             }
         }
+
+        const progress = (sim + 1) / totalSimulations * 100;
+        const currentProgress = Math.floor(progress);
+
+        if (currentProgress > lastProgress || sim === totalSimulations - 1) {
+            updateProgress(sim === totalSimulations - 1 ? 100 : currentProgress);
+            lastProgress = currentProgress;
+            await new Promise(resolve => setTimeout(resolve, 10));
+        }
     }
 
+    document.getElementById('calculation-page').style.display = 'none';
     displayResults(wins, totalSimulations);
 }
 
 // 顯示結果
 function displayResults(wins, totalSimulations) {
-    document.getElementById('selection').style.display = 'none';
     const resultDiv = document.createElement('div');
     resultDiv.classList.add('container');
     
@@ -381,10 +413,19 @@ function displayResults(wins, totalSimulations) {
         spiritName.textContent = name[spiritIndex];
         row.appendChild(spiritName);
 
-        const winRateSpan = document.createElement('span');
-        winRateSpan.classList.add('win-rate');
-        winRateSpan.textContent = `${winRate}% (${wins[i]} 次勝利)`;
-        row.appendChild(winRateSpan);
+        const winRateBarContainer = document.createElement('div');
+        winRateBarContainer.classList.add('win-rate-bar-container');
+        
+        const winRateBar = document.createElement('div');
+        winRateBar.classList.add('win-rate-bar');
+        winRateBar.style.width = `${winRate}%`;
+        winRateBarContainer.appendChild(winRateBar);
+        row.appendChild(winRateBarContainer);
+
+        const winRateText = document.createElement('span');
+        winRateText.classList.add('win-rate-text');
+        winRateText.textContent = `${winRate}% (${wins[i]} 次勝利)`;
+        row.appendChild(winRateText);
 
         resultTable.appendChild(row);
     });
