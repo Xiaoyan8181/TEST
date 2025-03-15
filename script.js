@@ -378,11 +378,11 @@ async function calculateWinRate() {
     }
 
     document.getElementById('calculation-page').style.display = 'none';
-    displayResults(wins, totalSimulations);
+    displayResults(wins, totalSimulations, props);
 }
 
 // 顯示結果
-function displayResults(wins, totalSimulations) {
+function displayResults(wins, totalSimulations, props) {
     const resultDiv = document.createElement('div');
     resultDiv.classList.add('container');
     
@@ -397,6 +397,10 @@ function displayResults(wins, totalSimulations) {
 
     const resultTable = document.createElement('div');
     resultTable.classList.add('result-table');
+
+    const propLabels = ['+0~2', '+2~4', '骰子+1', '-0~2', '-2~4', '點數=1'];
+    const positiveProps = [0, 1, 2]; // 正面道具索引
+    const negativeProps = [3, 4, 5]; // 負面道具索引
 
     selectedSpirits.forEach((spiritIndex, i) => {
         const winRate = (wins[i] / totalSimulations * 100).toFixed(2);
@@ -426,6 +430,40 @@ function displayResults(wins, totalSimulations) {
         winRateText.classList.add('win-rate-text');
         winRateText.textContent = `${winRate}% (${wins[i]} 次勝利)`;
         row.appendChild(winRateText);
+
+        // 新增道具資訊，每行最多 2 個
+        const propsText = document.createElement('span');
+        propsText.classList.add('props-text');
+        const propValues = props[i];
+        const usedProps = propLabels.map((label, idx) => {
+            if (propValues[idx] > 0) {
+                const propSpan = document.createElement('span');
+                propSpan.textContent = `(${label}): ${propValues[idx]}`;
+                if (positiveProps.includes(idx)) {
+                    propSpan.classList.add('positive');
+                } else if (negativeProps.includes(idx)) {
+                    propSpan.classList.add('negative');
+                }
+                return propSpan.outerHTML;
+            }
+            return null;
+        }).filter(Boolean);
+
+        if (usedProps.length > 0) {
+            let formattedProps = '';
+            for (let j = 0; j < usedProps.length; j++) {
+                formattedProps += usedProps[j];
+                if (j % 2 === 1 && j < usedProps.length - 1) {
+                    formattedProps += '<br>';
+                } else if (j < usedProps.length - 1) {
+                    formattedProps += ', ';
+                }
+            }
+            propsText.innerHTML = formattedProps;
+        } else {
+            propsText.innerHTML = '(無道具)';
+        }
+        row.appendChild(propsText);
 
         resultTable.appendChild(row);
     });
